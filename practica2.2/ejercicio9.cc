@@ -1,6 +1,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
-#includes <fcntl.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/sysmacros.h>
