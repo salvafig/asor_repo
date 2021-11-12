@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/sysmacros.h>
+#include <string.h>
 #include <time.h>
 
 int main(int argc, char **argv){
