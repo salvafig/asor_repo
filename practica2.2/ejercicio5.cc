@@ -7,5 +7,5 @@ int main(){
   const char path[]="/pruebaEjercicio5.txt";
   int archivo = open(path, O_CREAT, 645);
   
-  return 1;
+  return 0;
 }
