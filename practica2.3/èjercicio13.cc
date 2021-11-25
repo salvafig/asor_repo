@@ -30,7 +30,6 @@ int main(int argc, char **argv){
 	int i = 0;
 	sleep(atoi(argv[1]));
 	while(!usr_interrupted){
-		printf("HOLA\n");
 		sleep(1);
 		sigsuspend(&old_mask);
 		i++;
