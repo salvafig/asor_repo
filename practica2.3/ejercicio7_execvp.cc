@@ -12,6 +12,7 @@ int main(int argc, char **argv){
 		command_arguments[i] = argv[i + 1];
 	}
 	
+	command_arguments[argc - 1] = NULL;
 
 	if(execvp(argv[1], command_arguments) < 0){
 		printf("%s\n", strerror(errno));
