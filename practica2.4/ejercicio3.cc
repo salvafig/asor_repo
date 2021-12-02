@@ -12,9 +12,9 @@ int main(int argc, char **argv){
 	const char *pathname = "pipe_name";
 	
 	if(mkfifo(pathname, S_IRWXU | S_IRWXG) != -1){
-		printf("Pipe opened.\n");
+		printf("Pipe created.\n");
 	}else{
-		printf("Could not open pipe.\n");
+		printf("Could not create pipe.\n");
 		fprintf(stderr, "%s\n", strerror(errno));
 		return 1;
 	}
