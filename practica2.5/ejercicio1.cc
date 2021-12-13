@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <string.h>
 #include <iostream>
+#include <errno.h>
 
 
 /* ./ejercicio1 hostname */
@@ -19,9 +20,10 @@ int main(int argc, char **argv){
 	int rc = getaddrinfo(argv[1], NULL, &hints, &res);
 	
 	if(rc != 0){
-		std::cout << "gettaddrinfo: "
+		fprintf(stderr, "getaddrinfo: %s\n", strerror(errno));
+		/*std::cout << "getaddrinfo: "
 			<< strerror(rc)
-			<< std::endl;
+			<< std::endl;*/
 		return 1;
 	}
 	
@@ -33,6 +35,11 @@ int main(int argc, char **argv){
 		
 		int rc = getnameinfo(i->ai_addr, i->ai_addrlen, host, NI_MAXHOST,
 					serv, NI_MAXSERV, NI_NUMERICHOST);
+		
+		if(rc != 0){
+			fprintf(stderr, "getnameinfo: %s\n", strerror(errno));
+			return 1;
+		}
 					
 		std::cout << host << " " << i->ai_family << " " << i->ai_socktype << std::endl;
 		
