@@ -31,7 +31,7 @@ int main(int argc, char **argv){
 	while(1){
 		char buffer[80];
 		struct sockaddr_storage client;
-		socklent_t client_len;
+		socklent_t client_len = sizeof(struct sockaddr_storage);
 		char host[NI_MAXHOST];
 		char serv[NI_MAXSERV];
 		
