@@ -39,7 +39,7 @@ int main(int argc, char **argv){
 	sa.sa_handler = SIG_IGN; //to ignore this signal
 	sa.sa_flags = SA_RESTART; // Provide behavior compatible with BSD signal semantics by making certain system calls restartable across signals.
 	
-	sigaction(SIGCHLD; &sa, NULL);
+	sigaction(SIGCHLD, &sa, NULL);
 	
 	memset(&hints, 0, sizeof(struct addrinfo));
 	
