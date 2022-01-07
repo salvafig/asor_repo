@@ -1,13 +1,20 @@
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
+#include <string.h>
+#include <stdio.h>
+#include <sys/stat.h>
 
-int main(){
-  mode_t modo1 = umask(027)
-  const char path[]="/pruebaEjercicio7.txt";
-  int archivo = open(path, O_CREAT | O_RDONLY, 0777);
-  mode_t modo2 = umask(modo1)
-  
-  return 0;
+
+/* ./ejercicio7 */
+int main(int argc, char **argv){
+	int fd;
+
+	umask(0021);
+
+	if((fd == open("file_practica2.2_ejercicio7", O_CREAT, 0645) == -1)){
+		fprintf(stderr, "open: %s\n", strerror(errno));
+		return 1;
+	}
+
+	return 0;
 }
