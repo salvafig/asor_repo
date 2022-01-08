@@ -1,55 +1,45 @@
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
-#include <sys/sysmacros.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <stdlib.h>
+#include <iostream>
 
+
+/* ./ejercicio15 file_name */
 int main(int argc, char **argv){
-  int archivo = open(argv[1], O_CREAT | O_RDWR, 00777);
-  struct flock lock;
-  lock.l_type = F_UNLCK;
-  lock.l_whence = SEEK_SET;
-  lock.l_start = 0;
-  lock.l_len = 0;
-  lock.l_pid = getpid();
-  int status = fcntl(archivo, F_GETLK, &lock);
-  
-  if(lock.l_type != F_UNLCK){
-    close(archivo);
-    return 1;
-  }else{
-    lock.l_type = F_WRLCK;
-    lock.l_whence = SEEK_SET;
-    lock.l_start = 0;
-    lock.l_len = 0;
-    lock.l_pid = getpid();
-    
-    time_t tiempo = time(NULL);
-    struct tm *tm = localtime(&tiempo);
-  
-    fcntl(archivo, F_GETLK, &lock);
-    
-    char* buffer_hora;
-    strcpy(buffer_hora, tm->tm_hour);
-    buffer_hora = strcat(buffer_hora, " ");
-    buffer_hora = strcat(buffer_hora, tm->tm_min);
-    
-    write(archivo, &buffer_hora, strlen(buffer_hora));
-    sleep(30);
-    
-    lock.l_type = F_WRLCK;
-    lock.l_whence = SEEK_SET;
-    lock.l_start = 0;
-    lock.l_len = 0;
-    lock.l_pid = getpid();
-    fcntl(archivo, F_GETLK, &lock);
-    close(archivo);
-  }
+	int fd;
+	int lock;
+	time_t t;
+	struct tm *tm;
 
+	if((fd == open(argv[1], O_CREAT | O_RDWR)) == -1){
+		fprintf(stderr, "open: %s\n", strerror(errno));
+		return 1;
+	}
 
-  return 0;
+	lock = lockf(fd, F_TLOCK, 0);
+
+	if(lock == -1){
+		fprintf(stderr, "lockf_1: %s\n", strerror(errno));
+		return 1;
+	}
+
+	//Mostrar Hora Actual
+	t = time(NULL);
+	tm = localtime(&t);
+	printf("%d:%d:%d\n", tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	sleep(10);
+	if(lockf(fd, F_ULOCK, 0) == -1){
+		fprintf(stderr, "lockf_2: %s\n", strerror(errno));
+		return 1;
+	}
+
+	sleep(10);
+	
+	return 0;
 }
